@@ -1,0 +1,18 @@
+{
+  "name": "air-rest-api-default",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "bun run --hot main.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.11.2",
+    "dotenv": "^16.4.5",
+    "hono": "^4.4.2",
+    "hono-rate-limiter": "^0.3.0",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
