@@ -1,53 +1,56 @@
 import { Hono } from 'hono'
-import { cors } from 'hono/cors'
-import { csrf } from 'hono/csrf'
-import { etag } from 'hono/etag'
-import { prettyJSON } from 'hono/pretty-json'
-import { secureHeaders } from 'hono/secure-headers'
 import { CONFIG } from './app/config';
 import { AppRoutes } from './routes/web';
+import { poweredBy } from 'hono/powered-by'
+import { Handler } from './app/modules/handler';
+import { Plugins } from './app/modules/plugins'
+import { ApplicationOptions } from './utils/interfaces/app';
+import { AppMiddlewares } from './middlewares/app.middlewares';
 import { ApplyMiddleware } from './middlewares/all.middlewares';
-
+import { DefaultVariables } from './app/config/default-variables';
 // https://github.com/rhinobase/hono-rate-limiter
 class AppServer {
-    static App: Hono = new Hono();
+    static App = new Hono<ApplicationOptions<any, any>>();
     static PORT: number = +CONFIG.APP.APP_PORT;
     constructor() {
-       this.LoadConfig()
-       this.InitMiddlewares()
-       this.LoadRoutes()
-       this.ExceptionHandler()
+        this.SetLocalVariable()
+        this.LoadAppConfigPlugins()
+        this.InitMiddlewares()
+        this.LoadRoutes()
+        this.ExceptionHandler()
     }
-    private LoadConfig() {
-        AppServer.App.use(etag())
-        AppServer.App.use(prettyJSON())
-        AppServer.App.use(secureHeaders())
-        AppServer.App.use(csrf({ origin: 'myapp.example.com' }))
-        AppServer.App.use(cors({
-            origin: 'http://example.com',
-            allowHeaders: ['X-Custom-Header', 'Upgrade-Insecure-Requests'],
-            allowMethods: ['POST', 'GET', 'OPTIONS'],
-            exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
-            maxAge: 600,
-            credentials: true,
-          }))
-        AppServer.App.notFound((c) => {
-            return c.text('Custom 404 Message', 404)
-          }) 
+    private SetLocalVariable() {
+        AppServer.App.use(DefaultVariables.setApiKey())
+    }
+    private LoadAppConfigPlugins() {
+        AppServer.App
+            .use(poweredBy(), Plugins.useEtag(), Plugins.useCors())
+            .use(Plugins.usePrettyJsonPrint(), Plugins.useCSRF(), Plugins.useLogger())
+
     }
     private InitMiddlewares() {
+
+        CONFIG.APP.APP_ENV === 'PRODUCTION' && (
+            AppServer.App.use(AppMiddlewares.IRequestHeaders()),
+            AppServer.App.use(AppMiddlewares.isApiProtected())
+        )
         AppServer.App.use(ApplyMiddleware("testMiddleware"))
     }
     private ExceptionHandler() {
-        AppServer.App.notFound((c) => {
-            return c.text('Custom 404 Message', 404)
-          }) 
+        AppServer.App.onError((Handler.AppLevel))
+        AppServer.App.notFound(Handler.UnhandledRoutes)
     }
-    protected LoadRoutes() {       
-        AppServer.App.route("/",AppRoutes.MainRoutes())
+    protected LoadRoutes() {
+        AppServer.App.route("/", AppRoutes.MainRoutes())
     }
-    InitailizeApplication(): Hono {
-        return AppServer.App
+    InitailizeApplication(): {
+        port: number;
+        app: Hono<ApplicationOptions<any, any>>
+    } {     
+        return {
+            port: AppServer.PORT,
+            app: AppServer.App as Hono<ApplicationOptions<any, any>>,
+        }
     }
 }
 export const bootstrap = { AppServer: new AppServer() }

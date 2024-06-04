@@ -1,18 +1,17 @@
 import { createMiddleware } from 'hono/factory'
 
- 
-class AllMiddlewares {
-    public testMiddleware() {
-        return createMiddleware(async (c, next) => {
-            console.log("InitMiddlewares")
+
+class AllMiddlewares {   
+    testMiddleware() {
+        return createMiddleware(async (c, next) => {            
+            console.log(`Hello Im Middleware`)
             await next()
-            c.res.headers.set('X-Message', 'Good morning!')
         })
     }
 }
 
 
-export function ApplyMiddleware(middlewareFunction: keyof AllMiddlewares) {
+export function ApplyMiddleware(middlewareFunction:  keyof  AllMiddlewares) {
     const instance = new AllMiddlewares()
     return instance[middlewareFunction]()
 }
