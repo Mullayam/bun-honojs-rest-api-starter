@@ -1,6 +1,4 @@
-import { poweredBy } from 'hono/powered-by'
 import { logger } from 'hono/logger'
-import { basicAuth } from 'hono/basic-auth'
 import { createFactory } from 'hono/factory'
 import { Context } from 'hono'
 import { HTTPException } from 'hono/http-exception'
