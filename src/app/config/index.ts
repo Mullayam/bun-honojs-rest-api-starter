@@ -1,5 +1,5 @@
-const APP_PORT = Number(process.env.APP_PORT) || 7800
 const APP_ENV = String(process.env.APP_ENV) || "DEV"
+const APP_PORT = Number(process.env.APP_PORT) || 7800
 const APP_DOMAIN = String(process.env.APP_DOMAIN) || "localhost"
 const __config = {
     APP: {
@@ -9,6 +9,8 @@ const __config = {
         APP_URL: APP_ENV === "DEV" || APP_ENV === "undefined" ? `http://localhost:${APP_PORT}` : `https://${APP_DOMAIN}`,
         API_KEY: String(process.env.API_KEY),
         ALLOWED_PRIMARY_DOMAINS: String(process.env.ALLOWED_PRIMARY_DOMAINS),
+        ALLOWED_IP: String(process.env.ALLOWED_IP),
+        BLACKLISTED_IP: String(process.env.BLACKLISTED_IP),
         MAIL_TEMPLATE_PATH: String(process.env.MAIL_TEMPLATE_PATH),
     },
     STORAGE_DRIVER: String(process.env.STORAGE_DRIVER),
