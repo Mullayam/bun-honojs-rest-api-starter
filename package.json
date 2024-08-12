@@ -1,0 +1,24 @@
+{
+  "name": "air-rest-api-default",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf ./build && echo 'Done.'",
+    "dev": "bun --hot  run main.ts",
+    "build": "bun build ./main.ts --outdir ./out ",
+    "watch": "bun --watch run main.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.12.0",
+    "@hono/zod-validator": "^0.2.2",
+    "dotenv": "^16.4.5",
+    "glob": "^11.0.0",
+    "hono": "^4.5.1",
+    "hono-rate-limiter": "^0.4.0",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.6"
+  }
+}

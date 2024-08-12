@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "nodenext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "allowJs": true,
+    "outDir": "./build",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@factory/*": ["./src/factory/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@helpers/*": ["./src/utils/helpers/*"],
+      "@services/*": ["./src/utils/services/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@html/*": ["./src/utils/resources/html/*"],
+      "@jsx/*": ["./src/utils/resources/jsx/*"],
+      "@views/*": ["./src/utils/resources/views/*"]
+    },
+    "allowImportingTsExtensions": true,
+    
+    "noEmit": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Some stricter flags
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+  },
+  "include": ["src/**/*.ts", "main.ts", "src/utils/resources/jsx/index.tsx", "src/site-data.tsx"],
+  "exclude": ["node_modules", "build"]
+}
