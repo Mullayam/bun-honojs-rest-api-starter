@@ -36,6 +36,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
   },
-  "include": ["src/**/*.ts", "main.ts", "src/utils/resources/jsx/index.tsx", "src/site-data.tsx"],
+  "include": ["src/**/*.ts", "main.ts", "src/utils/resources/**/*.ts","src/utils/resources/**/*.tsx"],
   "exclude": ["node_modules", "build"]
 }

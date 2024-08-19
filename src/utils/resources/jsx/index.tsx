@@ -1,48 +1,37 @@
-import type { FC } from 'hono/jsx'
-import { jsx ,PropsWithChildren } from 'hono/jsx'
-import { Hello } from './app/hello';
-import { Button } from './components/Button';
-import { ThemeContext, themes } from './app/context/theme-context';
 import { Hono } from 'hono'
 import { hc } from 'hono/client'
-import { render } from 'hono/jsx/dom'
+import { CounterComponent } from './app/components/CounterComponent';
+import RootLayout from './app/layout';
+import Landing from './app/pages/landing';
+import NotFound from './app/pages/error/404';
+import { NotFoundException } from '@/app/libs/error';
+
 const app = new Hono()
+const isBrowserRequest = (c: any) => {
+  const acceptHeader = c.req.header('Accept');
+  return acceptHeader && acceptHeader.includes('text/html');
+};
 
-function Component({ title, children }: PropsWithChildren<any>) {
-    return (
-      <div>
-        <h1>{title}</h1>
-        {children}
-      </div>
-    )
-  }
-const RootLayout: FC<{ title: string }> = ({ title }) => {
-    return (
-        <html>
-            <meta charSet="utf-8" />
-            <title>{title}</title>
-            <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
-            <meta content="width=device-width, initial-scale=1" name="viewport" />
-            <body>
-                <ThemeContext.Provider value={themes.dark}>
-                    <Button />
-                    <Hello />
-                </ThemeContext.Provider>
-                <script type="module">
-                console.log("dtet")
+const routes = app.get('/', (c) => c.html(
+  <RootLayout title='Hello Hono - ENJOYS'>
+    <Landing />
+  </RootLayout>))
 
-                </script>
-            </body>
-        </html>
-    )
-}
+app.all('/render', (c) => {
+  const initialCount = 0;
+  return c.html(<CounterComponent initialCount={initialCount} />);
+})
 
-const routes = app.get('/', (c) => c.html(<RootLayout title='ENJOYS'/>))
-
-app.all('/*', (c) => c.html(<RootLayout  title='Not Found'/>))
-
+//  404 page
+app.all('/*', (c) => {
+  if (isBrowserRequest(c)) new NotFoundException()
+  return c.html(
+    <RootLayout title='Not Found'>
+      <NotFound />
+    </RootLayout>)
+})
 
 export type AppType = typeof routes
 const rpc = hc<AppType>("/") // RPC client
-// rpc.
+
 export default app

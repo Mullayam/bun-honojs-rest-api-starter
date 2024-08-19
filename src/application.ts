@@ -84,9 +84,9 @@ class AppServer {
         AppServer.App.notFound(GlobalHandler.UnhandledRoutes)
     }
     protected LoadRoutes() {
-        AppServer.App.route("/", AppRoutes.MainRoutes())
+        AppServer.App.route("/api", AppRoutes.MainRoutes())
         // Use Client App for SSR using Hono JSX
-        AppServer.App.route('/u', clientApp)
+        AppServer.App.route('/', clientApp)
     }
     /**
      * Returns the Hono application instance.
