@@ -12,41 +12,41 @@ export class CustomError extends HTTPException {
 export class NotFoundException extends HTTPException {
     constructor(message?: string) {
         super(400, {
-        cause: new Error(message),
-        message: message||"The server can not find the requested page.",
-      
+            cause: new Error(message),
+            message: message || "The server can not find the requested page.",
+
         })
     }
 }
 export class ForbiddenException extends HTTPException {
     constructor(message?: string) {
         super(403, {
-            cause: new Error(message||"Access is forbidden to the requested page.",),
-            message: message||"Access is forbidden to the requested page.",
+            cause: new Error(message || "Access is forbidden to the requested page.",),
+            message: message || "Access is forbidden to the requested page.",
         })
     }
 }
 export class UnauthorizedException extends HTTPException {
     constructor(message?: string) {
         super(401, {
-            cause: new Error(message||"Unauthorized",),
-            message: message||"Unauthorized",
+            cause: new Error(message || "Unauthorized",),
+            message: message || "Unauthorized",
         })
     }
 }
 export class InvalidRequestException extends HTTPException {
     constructor(message?: string) {
         super(400, {
-            cause: new Error(message||"Invalid or Bad Request",),
-            message: message||"Invalid or Bad Request",
+            cause: new Error(message || "Invalid or Bad Request",),
+            message: message || "Invalid or Bad Request",
         })
     }
 }
 export class PayloadTooLargeException extends HTTPException {
     constructor(message?: string) {
         super(413, {
-            cause: new Error(message||"The server will not accept the request, because the request entity is too large.",),
-            message: message||"The server will not accept the request, because the request entity is too large.",
+            cause: new Error(message || "The server will not accept the request, because the request entity is too large.",),
+            message: message || "The server will not accept the request, because the request entity is too large.",
         })
     }
 }

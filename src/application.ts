@@ -11,6 +11,7 @@ import { ApplyMiddleware } from './middlewares/all.middlewares';
 import { DefaultVariables } from './app/config/default-variables';
 import { NotFoundException } from './app/libs/error';
 import clientApp from './utils/resources/jsx';
+import { Logging } from './utils/logs';
 
 class AppServer {
     static App = new Hono<ApplicationOptions<any, any>>();
@@ -20,6 +21,8 @@ class AppServer {
      * initializing middlewares, loading routes, and handling exceptions.
      */
     constructor() {
+        Logging.setName('NodeMailPro') // Set Logger Name here
+
         this.SetLocalVariable()
         this.LoadAppConfigPlugins()
         this.InitMiddlewares()
@@ -46,17 +49,7 @@ class AppServer {
             .use(Plugins.usePrettyJsonPrint(), Plugins.useCSRF())
         // .use(Limiter) // Use Rate Limiter Middleware
         // .use(Plugins.useFileInterceptor()) // Use File Interceptor to detect file upload
-
-
-
-        // Use Serve Static Middleware that has been created for Node.js.
-        CONFIG.APP.APP_ENV === 'PRODUCTION' && (AppServer.App.use('/static/*', serveStatic({
-            root: '../public',
-            onNotFound: (path, c) => {
-                throw new NotFoundException()
-            },
-        })))
-
+ 
     }
     /**
      * Loads and initializes middlewares based on the environment.
@@ -69,7 +62,7 @@ class AppServer {
             AppServer.App.use(AppMiddlewares.isApiProtected())
         )
         // Apply Your Custom Middlewares Here, you can call multiple middlewares in one line
-        AppServer.App.use(ApplyMiddleware("testMiddleware"))
+        // AppServer.App.use(ApplyMiddleware("testMiddleware"))
     }
     /**
      * Sets up the exception handling and not found routes for the application.
@@ -107,7 +100,7 @@ class AppServer {
         port: number;
         app: Hono<ApplicationOptions<any, any>>
     } {
-
+        Logging.dev("App Server is running on port: http://localhost:" + AppServer.PORT)
         return {
             port: AppServer.PORT,
             app: AppServer.App as Hono<ApplicationOptions<any, any>>,

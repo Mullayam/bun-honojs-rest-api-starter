@@ -7,19 +7,23 @@
     "clean": "rm -rf ./build && echo 'Done.'",
     "dev": "bun --hot  run main.ts",
     "build": "bun build ./main.ts --outdir ./out ",
+    "build:map": "bun build ./main.ts --outdir ./out --target node  --sourcemap=external  --splitting",
     "watch": "bun --watch run main.ts"
   },
   "dependencies": {
-    "@hono/node-server": "^1.12.1",
+    "@hono/node-server": "^1.13.8",
     "@hono/zod-validator": "^0.2.2",
-    "dotenv": "^16.4.5",
-    "glob": "^11.0.0",
-    "hono": "^4.5.6",
-    "hono-rate-limiter": "^0.4.0",
+    "colorette": "^2.0.20",
+    "dotenv": "^16.4.7",
+    "glob": "^11.0.1",
+    "hono": "^4.7.0",
+    "hono-rate-limiter": "^0.4.2",
+    "moment": "^2.30.1",
     "reflect-metadata": "^0.2.2",
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.17",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.6"
+    "@types/bun": "^1.2.2"
   }
 }
