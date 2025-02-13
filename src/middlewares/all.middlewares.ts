@@ -1,6 +1,5 @@
 import { createMiddleware } from 'hono/factory'
 
-
 class AllMiddlewares {   
     testMiddleware() {
         return createMiddleware(async (c, next) => {            
